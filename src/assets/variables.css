@@ -1,0 +1,28 @@
+:root {
+  --color-primary: #1a1b2f;
+  --color-primary-dark: #141527;
+  --color-accent: #ff7849;
+  --color-accent-transparent: rgba(255, 120, 73, 0.2);
+  --color-surface: rgba(255, 255, 255, 0.05);
+  --color-surface-light: rgba(255, 255, 255, 0.1);
+  --border-radius: 12px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-effect {
+  background: var(--color-surface);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes gallop {
+  0% { transform: translateX(0) scaleY(1); }
+  25% { transform: translateX(2px) scaleY(0.95); }
+  50% { transform: translateX(4px) scaleY(1.05); }
+  75% { transform: translateX(2px) scaleY(0.95); }
+  100% { transform: translateX(0) scaleY(1); }
+}
+
+.animate-gallop:hover {
+  animation: gallop 1s infinite;
+} 
