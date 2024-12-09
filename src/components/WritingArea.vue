@@ -1,10 +1,14 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useModProStore } from '../stores/modpro'
 
 const isExpanded = ref(false)
 const isContinueActive = ref(false)
 const isLocking = ref(false)
 const isShaking = ref(false)
+
+const modproStore = useModProStore()
+const activeModuleName = ref('')
 
 const toggleExpand = () => {
   isExpanded.value = !isExpanded.value
@@ -32,6 +36,13 @@ const handleContinue = () => {
 const toggleLock = () => {
   isLocking.value = !isLocking.value
 }
+
+const selectModule = (moduleId) => {
+  const module = modproStore.selectedModules.find(m => m.id === moduleId)
+  if (module) {
+    activeModuleName.value = module.name
+  }
+}
 </script>
 
 <template>
@@ -39,7 +50,7 @@ const toggleLock = () => {
     <div class="toolbar top-toolbar">
       <input 
         type="text" 
-        placeholder="输入本次写作的目的，AI会理解更好哦" 
+        placeholder="输入写作目的 AI会理解更好" 
         class="input" 
       />
       <div class="ai-functions">
@@ -83,11 +94,21 @@ const toggleLock = () => {
       <div class="mod-pro">
         <span class="ai-functions-title" style="margin-right: 0.75rem">ModPro</span>
         <div class="dropdown">
-          <button class="dropdown-toggle">请选择专家模块</button>
+          <button class="dropdown-toggle">
+            {{ activeModuleName || (modproStore.selectedModules.length > 0 ? '已选择专家模块' : '请选择专家模块') }}
+          </button>
           <div class="dropdown-menu">
-            <button class="dropdown-item">专家模块 1</button>
-            <button class="dropdown-item">专家模块 2</button>
-            <button class="dropdown-item">专家模块 3</button>
+            <div v-if="modproStore.selectedModules.length === 0" class="dropdown-item no-modules">
+              请在设置中进行ModPro设定
+            </div>
+            <button 
+              v-for="module in modproStore.selectedModules"
+              :key="module.id"
+              class="dropdown-item"
+              @click="selectModule(module.id)"
+            >
+              {{ module.name }}
+            </button>
           </div>
         </div>
       </div>
@@ -169,7 +190,7 @@ const toggleLock = () => {
   background: var(--bg-light);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  padding: 0.5rem 0;
+  padding: 0.5rem;
   min-width: 150px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -179,15 +200,24 @@ const toggleLock = () => {
 }
 
 .dropdown-item {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.35rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
   width: 100%;
   text-align: left;
-  padding: 0.5rem 1rem;
   border: none;
   background: transparent;
   cursor: pointer;
-  color: var(--text-primary) !important;
-  font-size: 0.8rem;
+  color: var(--text-primary);
+}
+
+.dropdown-item:last-child {
+  margin-bottom: 0;
 }
 
 .dropdown-item:hover {
@@ -345,5 +375,12 @@ button:hover {
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.no-modules {
+  color: var(--text-secondary);
+  font-style: italic;
+  cursor: default;
+  padding: 0.5rem 0.75rem;
 }
 </style> 

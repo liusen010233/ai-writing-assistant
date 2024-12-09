@@ -2,11 +2,13 @@
 import { ref, onMounted } from 'vue'
 import LoginModal from './LoginModal.vue'
 import ApiSettingsModal from './ApiSettingsModal.vue'
+import ModProSettingsModal from './ModProSettingsModal.vue'
 
 const showTips = ref(false)
 const showLoginModal = ref(false)
 const showSettingsDropdown = ref(false)
 const showApiSettings = ref(false)
+const showModProSettings = ref(false)
 
 onMounted(() => {
   showTips.value = true
@@ -39,6 +41,12 @@ const closeTips = () => {
           >
             API 设定
           </button>
+          <button 
+            class="dropdown-item"
+            @click="showModProSettings = true; showSettingsDropdown = false"
+          >
+            ModPro 设定
+          </button>
         </div>
       </div>
     </div>
@@ -61,6 +69,12 @@ const closeTips = () => {
     <ApiSettingsModal 
       v-if="showApiSettings"
       @close="showApiSettings = false"
+    />
+
+    <!-- ModPro 设置弹窗 -->
+    <ModProSettingsModal 
+      v-if="showModProSettings"
+      @close="showModProSettings = false"
     />
   </header>
 </template>
@@ -192,6 +206,7 @@ const closeTips = () => {
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.3s ease;
+  font-size: 0.75rem;
 }
 
 .dropdown-item:hover {
