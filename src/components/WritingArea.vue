@@ -80,6 +80,17 @@ const toggleLock = () => {
           </button>
         </div>
       </div>
+      <div class="mod-pro">
+        <span class="ai-functions-title" style="margin-right: 0.75rem">ModPro</span>
+        <div class="dropdown">
+          <button class="dropdown-toggle">请选择专家模块</button>
+          <div class="dropdown-menu">
+            <button class="dropdown-item">专家模块 1</button>
+            <button class="dropdown-item">专家模块 2</button>
+            <button class="dropdown-item">专家模块 3</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="content-area">
@@ -133,7 +144,7 @@ const toggleLock = () => {
   border: none;
   z-index: 101;
   transition: none;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -176,6 +187,7 @@ const toggleLock = () => {
   background: transparent;
   cursor: pointer;
   color: var(--text-primary) !important;
+  font-size: 0.8rem;
 }
 
 .dropdown-item:hover {
@@ -204,7 +216,7 @@ const toggleLock = () => {
 
 .bottom-toolbar button {
   padding: 0.35rem 0.75rem;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 button {
@@ -216,6 +228,7 @@ button {
   color: var(--text-primary);
   cursor: pointer;
   transition: var(--transition);
+  font-size: 0.8rem;
 }
 
 button:hover {
@@ -232,10 +245,12 @@ button:hover {
   backdrop-filter: blur(10px);
   color: var(--text-primary);
   margin-right: 0.5rem;
+  font-size: 0.8rem;
 }
 
 .input::placeholder {
   color: var(--text-secondary);
+  font-size: 0.8rem;
 }
 
 .ai-functions {
@@ -293,6 +308,7 @@ button:hover {
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.8rem;
 }
 
 .action-btn:hover {
@@ -303,5 +319,31 @@ button:hover {
   background: var(--accent);
   border-color: var(--accent);
   color: white;
+}
+
+.mod-pro {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mod-pro .dropdown-toggle {
+  min-width: 160px;
+  text-align: left;
+  position: relative;
+  padding-right: 2rem;
+  font-size: 0.8rem;
+}
+
+.mod-pro .dropdown-toggle::after {
+  content: '▼';
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 </style> 
