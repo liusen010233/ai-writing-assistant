@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { publicModules } from '../config/modpro'
 import { useModProStore } from '../stores/modpro'
 
@@ -7,8 +7,16 @@ const emit = defineEmits(['close'])
 const selectedType = ref('public')
 const modproStore = useModProStore()
 
-// 自定义模块列表
+// 自定义模块列表,从localStorage读取
 const customModules = ref([])
+
+// 初始化时从localStorage加载已保存的自定义模块
+onMounted(() => {
+  const savedModules = localStorage.getItem('customModules')
+  if (savedModules) {
+    customModules.value = JSON.parse(savedModules)
+  }
+})
 
 const handleClose = () => {
   emit('close')
@@ -44,7 +52,7 @@ const handleAddModPro = () => {
     name: '',
     description: '',
     botToken: '',
-    botAddress: '',
+    botAddress: '', 
     source: '扣子',
     isEditing: true
   })
@@ -61,11 +69,34 @@ const handleSave = (index) => {
   
   // 保存该行数据
   module.isEditing = false
+  
+  // 生成唯一ID
+  if (!module.id) {
+    module.id = 'custom_' + Date.now()
+  }
+  
+  // 保存到localStorage
+  localStorage.setItem('customModules', JSON.stringify(customModules.value))
+  
+  // 添加到ModPro store
+  if (!modproStore.selectedModules.find(m => m.id === module.id)) {
+    modproStore.addModule(module)
+  }
 }
 
 const handleDelete = (index) => {
+  const moduleToDelete = customModules.value[index]
+  
+  // 从store中移除
+  if (moduleToDelete.id) {
+    modproStore.removeModule(moduleToDelete.id)
+  }
+  
   // 删除该行数据
   customModules.value.splice(index, 1)
+  
+  // 更新localStorage
+  localStorage.setItem('customModules', JSON.stringify(customModules.value))
 }
 
 const handleEdit = (index) => {
